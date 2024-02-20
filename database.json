@@ -1,0 +1,89 @@
+db.orders.insert(
+   [
+     {
+        "OrderID" : "1",
+        "FirstName" : "Weltpixel",
+        "LastName" : "Ai",
+        "OrderEmail" : "test@aol.com",
+        "OrderDate" : "2018-03-15T10:44:50",
+        "OrderItems" : {
+            "Item" : [
+                {
+                    "ItemID" : "10",
+                    "ItemStatus" : "Ordered",
+                    "ItemStatusId" : "4",
+                    "ItemPrice" : "49.9700"
+                },
+                {
+                    "ItemID" : "20",
+                    "ItemStatus" : "Cancelled",
+                    "ItemStatusId" : "29",
+                    "ItemPrice" : "100.7000"
+                },
+                {
+                    "ItemID" : "30",
+                    "ItemStatus" : "Item Shipped - Tracking Sent",
+                    "ItemStatusId" : "17",
+                    "ItemPrice" : "21.0000"
+                },
+                {
+                    "ItemID" : "40",
+                    "ItemStatus" : "Item Return Received",
+                    "ItemStatusId" : "24",
+                    "ItemPrice" : "12.2000"
+                },
+                {
+                    "ItemID" : "50",
+                    "ItemStatus" : "Item Shipped - Tracking Sent",
+                    "ItemStatusId" : "17",
+                    "ItemPrice" : "15.9900"
+                }
+            ]
+        }
+    },
+    {
+        "OrderID" : "2",
+        "FirstName" : "Random",
+        "LastName" : "Name",
+        "OrderEmail" : "test@aol.com",
+        "OrderDate" : "2018-03-15T10:44:50",
+        "OrderItems" : {
+            "Item" : [
+                {
+                    "ItemID" : "30",
+                    "ItemStatus" : "Item Shipped - Tracking Sent",
+                    "ItemStatusId" : "17",
+                    "ItemPrice" : "21.0000"
+                },
+                {
+                    "ItemID" : "40",
+                    "ItemStatus" : "Item Return Received",
+                    "ItemStatusId" : "24",
+                    "ItemPrice" : "12.2000"
+                },
+                {
+                    "ItemID" : "50",
+                    "ItemStatus" : "Item Shipped - Tracking Sent",
+                    "ItemStatusId" : "17",
+                    "ItemPrice" : "15.9900"
+                }
+            ]
+        }
+    },
+    {
+        "OrderID" : "3",
+        "FirstName" : "Weltpixel",
+        "LastName" : "Ai",
+        "OrderEmail" : "test@aol.com",
+        "OrderDate" : "2018-03-15T10:44:50",
+        "OrderItems" : {
+            "Item" : {
+                    "ItemID" : "15",
+                    "ItemStatus" : "Item Shipped - Tracking Sent",
+                    "ItemStatusId" : "17",
+                    "ItemPrice" : "49.9700"
+                }
+        }
+    }
+   ]
+)
