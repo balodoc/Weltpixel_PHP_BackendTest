@@ -2,7 +2,8 @@
     "name": "weltpixel/test",
     "require": {
         "monolog/monolog": "^1.22",
-        "phpmailer/phpmailer": "^5.2"
+        "phpmailer/phpmailer": "^5.2",
+      "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {"Services\\": ""}
