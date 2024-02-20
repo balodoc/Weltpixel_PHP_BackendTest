@@ -4,6 +4,7 @@ namespace Services\Database;
 
 use PDO;
 use PDOException;
+use RuntimeException;
 
 class MysqlDbHandler implements DbHandlerInterface
 {
@@ -25,7 +26,7 @@ class MysqlDbHandler implements DbHandlerInterface
     /**
      * @var string $password
      */
-    protected $password = '';
+    protected $password = 'rtacadena';
 
     /**
      * @var PDO|null $connection
@@ -83,11 +84,35 @@ class MysqlDbHandler implements DbHandlerInterface
      */
     public function select(array $options): array
     {
-        // $stmt = $this->connection->prepare('select * from order_item');
-        // $stmt->execute();
-        // $x = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        // die(var_dump($x));
+        if (empty($options)) {
+            throw new RuntimeException();
+        }
 
-        return [];
+        $tableName = $options['table'];
+        $columns = empty($options['columns'])
+            ? '*'
+            : implode(', ', $options['columns'])
+        ;
+
+        $order = $options['order'] ?? null;
+        $limit = $options['limit'] ?? null;
+
+        $query = sprintf("SELECT %s FROM %s ", $columns, $tableName);
+
+        if ($order) {
+            if (isset($order['key']) && isset($order['direction'])) {
+                $query .= "ORDER BY {$order['key']} {$order['direction']} ";
+            }
+        }
+
+        if ($limit) {
+            $intLimit = intval($limit);
+            $query .= "LIMIT {$intLimit} ";
+        }
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

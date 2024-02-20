@@ -8,13 +8,18 @@ use Monolog\Logger;
  */
 class DbHandler implements DbHandlerInterface
 {
-
     /**
      * Mongo database handler constructor
      */
     public function __construct()
     {
-
     }
 
+    public function execute()
+    {
+    }
+
+    public function select(array $options): array
+    {
+    }
 }

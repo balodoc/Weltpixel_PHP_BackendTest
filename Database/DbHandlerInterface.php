@@ -1,6 +1,8 @@
 <?php
 namespace Services\Database;
 
+use RuntimeException;
+
 /**
  * DB handler interface.
  */
