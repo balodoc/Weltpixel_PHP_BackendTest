@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Services\Database\MysqlDbHandler;
 use Services\Database\OrderDbService;
 
@@ -24,15 +25,23 @@ require 'vendor/autoload.php';
 /**
  * 1. Get all orders from the database that are from Weltpixel.
  */
-$orderService = new OrderDbService(
-    new MysqlDbHandler()
-);
+$orderService = new OrderDbService(new MysqlDbHandler());
+$options = ['conditions' => ['FirstName' => ['operator' => '=', 'value' => 'Weltpixel']]];
+$orders = $orderService->fetchAll($options);
 
 /**
  * 2. Send an email notification to the OrderEmail field for the items with status Item Shipped
  * that includes a total amount and the order details(name, date, item id, item price)
+ *
+ * A) Make use of Presenter model classes to put the order&item data into objects;
+ * B) Write a presenter class(that implements PresenterInterface) to format the order;
+ * C) Create an email notifier implementation to use along with "PHPMailer" package;
  */
-$orders = $orderService->fetchAll();
+$shippedOrders = array_filter($orders, function (array $order) {
+    return $order['OrderItems_Item_ItemStatus'] == 'Item Shipped - Tracking Sent';
+});
+
+var_dump($shippedOrders);
 
 /**
  * 3. Update the order records that you sent notification for and set the item statuses

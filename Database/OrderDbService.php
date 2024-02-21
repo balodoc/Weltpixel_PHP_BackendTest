@@ -38,6 +38,7 @@ class OrderDbService implements OrderServiceInterface
     {
         $defaults = [
             'table' => static::$table,
+            'conditions' => [],
             'columns' => [
                 'OrderID',
                 'FirstName',
@@ -56,9 +57,7 @@ class OrderDbService implements OrderServiceInterface
             'limit' => null,
         ];
 
-        return $this->dbHandler->select(
-            array_merge($defaults, $options)
-        );
+        return $this->dbHandler->select(array_merge($defaults, $options));
     }
 
     /**

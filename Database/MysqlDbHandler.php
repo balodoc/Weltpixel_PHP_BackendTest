@@ -89,6 +89,7 @@ class MysqlDbHandler implements DbHandlerInterface
         }
 
         $tableName = $options['table'];
+        $conditions = $options['conditions'];
         $columns = empty($options['columns'])
             ? '*'
             : implode(', ', $options['columns'])
@@ -99,18 +100,31 @@ class MysqlDbHandler implements DbHandlerInterface
 
         $query = sprintf("SELECT %s FROM %s ", $columns, $tableName);
 
+        if ($conditions) {
+            $query .= ' WHERE ';
+            foreach ($conditions as $column => $operation) {
+                $query .= "{$column} {$operation['operator']} :$column AND ";
+            }
+            $query = rtrim($query, 'AND ');
+        }
+
         if ($order) {
             if (isset($order['key']) && isset($order['direction'])) {
-                $query .= "ORDER BY {$order['key']} {$order['direction']} ";
+                $query .= " ORDER BY {$order['key']} {$order['direction']} ";
             }
         }
 
         if ($limit) {
             $intLimit = intval($limit);
-            $query .= "LIMIT {$intLimit} ";
+            $query .= " LIMIT {$intLimit} ";
         }
 
         $stmt = $this->connection->prepare($query);
+
+        foreach ($conditions as $column => $operation) {
+            $stmt->bindParam(":$column", $operation['value']);
+        }
+
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
