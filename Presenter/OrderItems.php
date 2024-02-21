@@ -23,6 +23,18 @@ class OrderItems
      */
     public function __call($func, $args)
     {
+        $funcPrefix = substr($func, 0, 3);
+        $attribute = substr($func, 3);
+
+        if ($funcPrefix == 'set' && count($args) > 0) {
+            $this->item[$attribute] = $args[0];
+        } elseif ($funcPrefix == 'get') {
+            return $this->item[$attribute] ?? null;
+        } else {
+            throw new \RuntimeException('Cannot resolve method: ' . $func);
+        }
+
+        return $this;
     }
 
     /**
