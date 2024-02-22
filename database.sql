@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS `order_item` (
 );
 
 INSERT INTO order_item VALUES
-(1,'Weltpixel','Ai','test@aol.com','2018-03-15T10:44:50',10,'Ordered',4,49.9700),
-(1,'Weltpixel','Ai','test@aol.com','2018-03-15T10:44:50',20,'Cancelled',29,100.7000),
-(1,'Weltpixel','Ai','test@aol.com','2018-03-15T10:44:50',30,'Item Shipped - Tracking Sent',17,21.0000),
-(1,'Weltpixel','Ai','test@aol.com','2018-03-15T10:44:50',40,'Item Return Received',24,12.2000),
-(1,'Weltpixel','Ai','test@aol.com','2018-03-15T10:44:50',50,'Item Shipped - Tracking Sent',17,15.9900),
-(2,'Random','Name','test@aol.com','2018-03-15T10:44:50',30,'Item Shipped - Tracking Sent',17,21.0000),
-(2,'Random','Name','test@aol.com','2018-03-15T10:44:50',40,'Item Return Received',24,12.2000),
-(2,'Random','Name','test@aol.com','2018-03-15T10:44:50',50,'Item Shipped - Tracking Sent',17,15.9900),
-(3,'Weltpixel','Ai','test@aol.com','2018-03-15T10:44:50',15,'Item Shipped - Tracking Sent',17,49.9700);
+(1,'Weltpixel','Ai','tacadena.roland@gmail.com','2018-03-15T10:44:50',10,'Ordered',4,49.9700),
+(1,'Weltpixel','Ai','tacadena.roland@gmail.com','2018-03-15T10:44:50',20,'Cancelled',29,100.7000),
+(1,'Weltpixel','Ai_1','tacadena.roland@gmail.com','2018-03-15T10:44:50',30,'Item Shipped - Tracking Sent',17,21.0000),
+(1,'Weltpixel','Ai','tacadena.roland@gmail.com','2018-03-15T10:44:50',40,'Item Return Received',24,12.2000),
+(1,'Weltpixel','Ai_2','tacadena.roland.caras@gmail.com','2018-03-15T10:44:50',50,'Item Shipped - Tracking Sent',17,15.9900),
+(2,'Random','Name','tacadena.roland@gmail.com','2018-03-15T10:44:50',30,'Item Shipped - Tracking Sent',17,21.0000),
+(2,'Random','Name','tacadena.roland@gmail.com','2018-03-15T10:44:50',40,'Item Return Received',24,12.2000),
+(2,'Random','Name','tacadena.roland@gmail.com','2018-03-15T10:44:50',50,'Item Shipped - Tracking Sent',17,15.9900),
+(3,'Weltpixel','Ai_3','rwlandx@gmail.com','2018-03-15T10:44:50',15,'Item Shipped - Tracking Sent',17,49.9700);

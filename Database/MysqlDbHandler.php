@@ -4,6 +4,7 @@ namespace Services\Database;
 
 use PDO;
 use PDOException;
+use PDOStatement;
 use RuntimeException;
 
 class MysqlDbHandler implements DbHandlerInterface
@@ -32,6 +33,11 @@ class MysqlDbHandler implements DbHandlerInterface
      * @var PDO|null $connection
      */
     protected $connection;
+
+    /**
+     * @var PDOStatement $pdoStatement
+     */
+    protected $pdoStatement;
 
     /**
      * Initialize connection.
@@ -73,9 +79,22 @@ class MysqlDbHandler implements DbHandlerInterface
     }
 
     /**
+     * @return bool
+     */
+    public function execute(): bool
+    {
+        return $this->pdoStatement->execute();
+    }
+
+    /**
+     * @param string $pdoStatement
+     *
      * @return void
      */
-    public function execute() {}
+    public function createStatement(string $pdoStatement)
+    {
+        $this->pdoStatement = $this->connection->prepare($pdoStatement);
+    }
 
     /**
      * @param array $options
@@ -119,14 +138,14 @@ class MysqlDbHandler implements DbHandlerInterface
             $query .= " LIMIT {$intLimit} ";
         }
 
-        $stmt = $this->connection->prepare($query);
+        $this->createStatement($query);
 
         foreach ($conditions as $column => $operation) {
-            $stmt->bindParam(":$column", $operation['value']);
+            $this->pdoStatement->bindParam(":$column", $operation['value']);
         }
 
-        $stmt->execute();
+        $this->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

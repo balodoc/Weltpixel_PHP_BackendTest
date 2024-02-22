@@ -2,22 +2,40 @@
 
 namespace Services\Notifier;
 
+use Exception;
 use PHPMailer;
+use phpmailerException;
 use SMTP;
 
 /**
  * Notify via email.
  */
-class EmailNotifier implements NotifierInterface
+class EmailNotifier implements
+    NotifierInterface,
+    SendableMessageInterface,
+    ReplyableMessageInterface
 {
     /**
      * @var PHPMailer $mailer
      */
     protected $mailer;
 
+    /**
+     * @throws phpmailerException
+     */
     public function __construct()
     {
         $this->mailer = new PHPMailer();
+        $this->setDefaults();
+    }
+
+    /**
+     * @return void
+     *
+     * @throws phpmailerException
+     */
+    private function setDefaults()
+    {
         $this->mailer->isSMTP();
         $this->mailer->SMTPDebug = SMTP::DEBUG_SERVER;
         $this->mailer->Host = 'smtp.gmail.com';
@@ -26,12 +44,8 @@ class EmailNotifier implements NotifierInterface
         $this->mailer->SMTPAuth = true;
         $this->mailer->Username = 'doc.balodoc@gmail.com';
         $this->mailer->Password = 'lufzzuqhiffwcusx';
-        $this->mailer->setFrom('doc.balodoc@gmail.com', 'First Last');
-        $this->mailer->addReplyTo('doc.balodoc@gmail.com', 'First Last');
-        // $this->mailer->addAddress('tacadena.roland@gmail.com', 'John Doe');
-        $this->mailer->Subject = 'PHPMailer GMail SMTP test';
-        $this->mailer->msgHTML(file_get_contents('contents.html'), __DIR__);
-        // $this->mailer->AltBody = 'This is a plain-text message body';
+        $this->mailer->setFrom('doc.balodoc@gmail.com', 'Roland Tacadena');
+        $this->mailer->addReplyTo('doc.balodoc@gmail.com', 'Roland Tacadena');
     }
 
     /**
@@ -39,8 +53,15 @@ class EmailNotifier implements NotifierInterface
      *
      * @return bool
      */
-    public function connect(array $data): bool
+    public function connect(array $data = []): bool
     {
+        try {
+            $this->mailer->smtpConnect($data);
+            $this->mailer->smtpClose();
+        } catch (phpmailerException $e) {
+            return false;
+        }
+
         return true;
     }
 
@@ -51,22 +72,73 @@ class EmailNotifier implements NotifierInterface
      */
     public function send(string $message): bool
     {
-        $mail = new PHPMailer();
-        $mail->isSMTP();
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        $mail->Host = 'smtp.gmail.com';
-        $mail->Port = 465;
-        $mail->SMTPSecure = 'ssl';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'doc.balodoc@gmail.com';
-        $mail->Password = 'lufzzuqhiffwcusx';
-        $mail->setFrom('doc.balodoc@gmail.com', 'First Last');
-        $mail->addReplyTo('doc.balodoc@gmail.com', 'First Last');
-        $mail->addAddress('tacadena.roland@gmail.com', 'John Doe');
-        $mail->Subject = 'PHPMailer GMail SMTP test';
-        $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
-        $mail->AltBody = 'This is a plain-text message body';
+        $this->mailer->msgHTML($message);
+
+        try {
+            if (!$this->mailer->send()) {
+                 return false;
+            }
+        } catch (phpmailerException $e) {
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+
+        $this->mailer->clearAllRecipients();
 
         return true;
+    }
+
+    /**
+     * @param string $to
+     * @param string $name
+     *
+     * @return void
+     */
+    public function replyTo(string $to, string $name)
+    {
+        $this->mailer->addReplyTo($to, $name);
+    }
+
+    /**
+     * @param string $from
+     * @param string $name
+     *
+     * @return void
+     *
+     * @throws phpmailerException
+     */
+    public function setFrom(string $from, string $name)
+    {
+        $this->mailer->setFrom($from, $name);
+    }
+
+    /**
+     * @param string $to
+     * @param string $name
+     *
+     * @return void
+     */
+    public function addReceiver(string $to, string $name)
+    {
+        $this->mailer->addAddress($to, $name);
+    }
+
+    /**
+     * @param string $subject
+     *
+     * @return void
+     */
+    public function setSubject(string $subject)
+    {
+        $this->mailer->Subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->mailer->ErrorInfo;
     }
 }

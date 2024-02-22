@@ -12,17 +12,12 @@ class OrderDbService implements OrderServiceInterface
     protected static $table = 'order_item';
 
     /**
-     * @var int|null
-     */
-    protected static $defaultLimit = null;
-
-    /**
-     * @var DbHandlerInterface $dbHandler
+     * @var DbHandlerInterface|MysqlDbHandler $dbHandler
      */
     protected $dbHandler;
 
     /**
-     * @param DbHandlerInterface $handler
+     * @param DbHandlerInterface|MysqlDbHandler $handler
      */
     public function __construct(DbHandlerInterface $handler)
     {
@@ -62,25 +57,46 @@ class OrderDbService implements OrderServiceInterface
 
     /**
      * @param int $orderId
+     * @param int $itemId
      * @param string $status
      *
-     * @return mixed|void
+     * @return void
+     * @noinspection SqlDialectInspection
      */
-    public function setStatusText(int $orderId, string $status)
+    public function setStatusText(int $orderId, int $itemId, string $status)
     {
-        // find the order in DB
-        // set status to $status
+        $table = self::$table;
+
+        $query = "
+            UPDATE `{$table}` 
+            SET `OrderItems_Item_ItemStatus` = '$status'
+            WHERE `OrderID` = $orderId 
+            AND `OrderItems_Item_ItemID` = $itemId
+        ";
+
+        $this->dbHandler->createStatement($query);
+        $this->dbHandler->execute();
     }
 
     /**
-     * @param int $id
+     * @param int $orderId
+     * @param int $itemId
      * @param int $statusId
      *
-     * @return mixed|void
+     * @return void
      */
-    public function setStatusId(int $id, int $statusId)
+    public function setStatusId(int $orderId, int $itemId, int $statusId)
     {
-        // find the order in DB
-        // set status to $status
+        $table = self::$table;
+
+        $query = "
+            UPDATE `{$table}` 
+            SET `OrderItems_Item_ItemStatusId` = $statusId
+            WHERE `OrderID` = $orderId 
+            AND `OrderItems_Item_ItemID` = $itemId
+        ";
+
+        $this->dbHandler->createStatement($query);
+        $this->dbHandler->execute();
     }
 }
