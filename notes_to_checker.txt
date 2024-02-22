@@ -1,0 +1,12 @@
+- used mysql as database since I am more comfortable with it
+- updated some keywords in database.sql like "order" since it's a reserved keyword in mysql
+- since I used mysql, I implemented DbHandlerInterface through MysqlDbHandler
+    - selecting
+    - updating records
+- utilized the MysqlDbHandler in OrderDbService to query and update records
+- Added EmailNotifier that implements Notifier interface to email users through PHPMailer
+    - Added some interfaces like Sendable and Replyable interfaces to represent the receiver, subject and message
+- Added some formatter to format data OrderEmailFormatter
+- on data presenters OrderData and OrderItems
+    - utilize the __call magic method to populate fields
+- implemented PresenterInterface through OrderDataPresenter
