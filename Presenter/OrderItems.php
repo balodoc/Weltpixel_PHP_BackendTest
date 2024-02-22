@@ -7,6 +7,14 @@ namespace Services\Presenter;
  */
 class OrderItems
 {
+    const ITEM_STATUS_SHIPPED = 'Item Shipped - Tracking Sent';
+    const ITEM_STATUS_NOTIFICATION_SENT = 'Notification sent';
+
+    const ITEM_STATUS_ID_4 = 4;
+    const ITEM_STATUS_ID_29 = 29;
+    const ITEM_STATUS_ID_10 = 10;
+    const ITEM_STATUS_ID_24 = 24;
+    const ITEM_STATUS_ID_17 = 17;
 
     /**
      * Item data.

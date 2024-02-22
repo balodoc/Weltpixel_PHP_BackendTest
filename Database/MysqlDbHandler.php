@@ -80,10 +80,16 @@ class MysqlDbHandler implements DbHandlerInterface
 
     /**
      * @return bool
+     *
+     * @throws RuntimeException
      */
     public function execute(): bool
     {
-        return $this->pdoStatement->execute();
+        try {
+            return $this->pdoStatement->execute();
+        } catch (PDOException $e) {
+            throw new RuntimeException('Error executing statement');
+        }
     }
 
     /**
@@ -100,6 +106,8 @@ class MysqlDbHandler implements DbHandlerInterface
      * @param array $options
      *
      * @return array
+     *
+     * @throws RuntimeException
      */
     public function select(array $options): array
     {

@@ -14,7 +14,7 @@ $orderService = new OrderDbService(new MysqlDbHandler());
 $options = [
     'conditions' => [
         'FirstName' => ['operator' => '=', 'value' => 'Weltpixel'],
-        'OrderItems_Item_ItemStatus' => ['operator' => '=', 'value' => 'Item Shipped - Tracking Sent']
+        'OrderItems_Item_ItemStatus' => ['operator' => '=', 'value' => OrderItems::ITEM_STATUS_SHIPPED]
     ]
 ];
 $shippedOrders = $orderService->fetchAll($options);
@@ -54,10 +54,13 @@ foreach ($shippedOrderObjects as $orderData) {
 foreach ($itemIdsToUpdate as $itemIdToUpdate) {
     $orderService->setStatusId(
         $itemIdToUpdate['order'],
-        $itemIdToUpdate['item'], 10
+        $itemIdToUpdate['item'],
+        OrderItems::ITEM_STATUS_ID_10
     );
+
     $orderService->setStatusText(
         $itemIdToUpdate['order'],
-        $itemIdToUpdate['item'], 'Notification sent'
+        $itemIdToUpdate['item'],
+        OrderItems::ITEM_STATUS_NOTIFICATION_SENT
     );
 }
